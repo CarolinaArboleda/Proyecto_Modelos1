@@ -5,9 +5,8 @@
 **Proyecto Integrador — Modelos y Simulación de Sistemas I (2026-II)**
 
 ## Integrantes del equipo
-- _Nombre integrante 1_
-- _Nombre integrante 2_
-- _Nombre integrante 3_
+- Carol Juliana Henao Causil
+- Carolina Arboleda Guzmán
 
 ## Descripción del problema
 Se busca predecir la **severidad de un accidente de tránsito** (leve, grave o fatal) a partir
