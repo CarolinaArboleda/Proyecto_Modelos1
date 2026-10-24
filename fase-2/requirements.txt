@@ -1,0 +1,6 @@
+# Python 3.12 (ver README). Versiones fijas probadas en un entorno limpio.
+numpy==2.4.4
+pandas==3.0.2
+scikit-learn==1.9.1
+joblib==1.5.3
+pytest==9.1.1
