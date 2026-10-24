@@ -1,0 +1,30 @@
+# Entornos, cachés y control de versiones
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+.pytest_cache/
+.git/
+.gitignore
+.idea/
+.vscode/
+
+# Credenciales
+.env
+*.pem
+*.key
+credentials*.json
+kaggle.json
+
+# Datos, modelos y salidas se montan como volúmenes (no van en la imagen)
+data/
+models/
+outputs/
+*.csv
+*.joblib
+
+# Documentación y archivos innecesarios
+README.md
+Dockerfile
+.dockerignore
