@@ -1,0 +1,120 @@
+{
+  "version": "v1",
+  "metrica_principal": "f1_macro",
+  "conjunto_evaluacion": "prueba (no usado para ajustar ni para elegir hiperparámetros)",
+  "modelo": {
+    "accuracy": 0.7326431181485993,
+    "f1_macro": 0.39932748283951697,
+    "per_class": {
+      "Slight Injury": {
+        "precision": 0.8831269349845201,
+        "recall": 0.8057909604519774,
+        "f1": 0.8426883308714919,
+        "support": 1416
+      },
+      "Serious Injury": {
+        "precision": 0.20973782771535582,
+        "recall": 0.2679425837320574,
+        "f1": 0.23529411764705882,
+        "support": 209
+      },
+      "Fatal injury": {
+        "precision": 0.07228915662650602,
+        "recall": 0.35294117647058826,
+        "f1": 0.12,
+        "support": 17
+      }
+    },
+    "confusion_matrix": {
+      "labels": [
+        "Slight Injury",
+        "Serious Injury",
+        "Fatal injury"
+      ],
+      "rows": "real",
+      "columns": "predicho",
+      "matrix": [
+        [
+          1141,
+          205,
+          70
+        ],
+        [
+          146,
+          56,
+          7
+        ],
+        [
+          5,
+          6,
+          6
+        ]
+      ]
+    }
+  },
+  "modelo_base": {
+    "descripcion": "DummyClassifier(most_frequent)",
+    "accuracy": 0.8623629719853837,
+    "f1_macro": 0.3086984957488555,
+    "per_class": {
+      "Slight Injury": {
+        "precision": 0.8623629719853837,
+        "recall": 1.0,
+        "f1": 0.9260954872465664,
+        "support": 1416
+      },
+      "Serious Injury": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 209
+      },
+      "Fatal injury": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 17
+      }
+    },
+    "confusion_matrix": {
+      "labels": [
+        "Slight Injury",
+        "Serious Injury",
+        "Fatal injury"
+      ],
+      "rows": "real",
+      "columns": "predicho",
+      "matrix": [
+        [
+          1416,
+          0,
+          0
+        ],
+        [
+          209,
+          0,
+          0
+        ],
+        [
+          17,
+          0,
+          0
+        ]
+      ]
+    }
+  },
+  "mejora_f1_macro_vs_base": 0.09062898709066147,
+  "validacion_cruzada_entrenamiento": {
+    "folds": 5,
+    "f1_macro_mean": 0.4091829424845774,
+    "f1_macro_std": 0.022338121172519834,
+    "f1_macro_folds": [
+      0.4357649813388802,
+      0.4243146257173303,
+      0.38180251628478995,
+      0.4208175742328268,
+      0.38321501484905984
+    ]
+  },
+  "seleccion_max_depth": null
+}
