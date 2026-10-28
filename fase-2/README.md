@@ -46,7 +46,7 @@ pip install -r requirements.txt
 ## 4. Datos
 
 - **Fuente original:** *Road Traffic Accident Dataset of Addis Ababa City*, Tarikwa Tesfa Bedane (2020), Mendeley Data, doi:10.17632/xytv86278f.1 (también en Kaggle: `saurabhshahane/road-traffic-accidents`; el original tiene 12.316 filas).
-- **Archivo usado:** `data/train.csv`, 8.210 filas × 33 columnas, incluido en el repositorio. Enlace exacto de donde se descargó: `[COMPLETAR: URL de descarga de train.csv]`.
+- **Archivo usado:** `data/train.csv`, 8.210 filas × 33 columnas, incluido en el repositorio. Enlace exacto de donde se descargó: el archivo se entrega ya incluido en `data/train.csv`; la fuente original es la de arriba (Kaggle `saurabhshahane/road-traffic-accidents`, Mendeley doi:10.17632/xytv86278f.1).
 - **SHA-256:** `c0ddb80c64bada8a6b833077d5f4a861114d709fd008a7aa70134fbd3353e7c5` (se registra también en cada `metadata.json`).
 - No se requieren credenciales ni descargas durante la ejecución.
 
@@ -145,7 +145,14 @@ mkdir models, outputs -Force
 docker run --rm -v "${PWD}/data:/app/data:ro" -v "${PWD}/models:/app/models" modelos-fase2:1.0 python train.py --data data/train.csv --target Accident_severity --output-dir models --version v-docker --seed 42
 docker run --rm -v "${PWD}/data:/app/data:ro" -v "${PWD}/models:/app/models:ro" -v "${PWD}/outputs:/app/outputs" modelos-fase2:1.0 python predict.py --model models/v-docker/modelo.joblib --input data/ejemplo_prediccion.csv --output outputs/predicciones_docker.csv
 ```
-La versión `v-docker` queda en `models/` del anfitrión (ignorada por Git; solo `v1` y `v2` se versionan). Terminal usada para esta guía: **[COMPLETAR: Bash / PowerShell]**. Las pruebas también corren en el contenedor: `docker run --rm modelos-fase2:1.0 python -m pytest`.
+La versión `v-docker` queda en `models/` del anfitrión (ignorada por Git; solo `v1` y `v2` se versionan). Terminal usada para esta guía: **CMD de Windows** (el que se usó para la evidencia):
+```
+for /f %i in ('git rev-parse HEAD') do set GIT_COMMIT=%i
+docker build -t modelos-fase2:1.0 --build-arg GIT_COMMIT=%GIT_COMMIT% .
+mkdir models outputs
+docker run --rm -v "%cd%/data:/app/data:ro" -v "%cd%/models:/app/models" modelos-fase2:1.0 python train.py --data data/train.csv --target Accident_severity --output-dir models --version v-docker --seed 42
+docker run --rm -v "%cd%/data:/app/data:ro" -v "%cd%/models:/app/models:ro" -v "%cd%/outputs:/app/outputs" modelos-fase2:1.0 python predict.py --model models/v-docker/modelo.joblib --input data/ejemplo_prediccion.csv --output outputs/predicciones_docker.csv
+```. Las pruebas también corren en el contenedor: `docker run --rm modelos-fase2:1.0 python -m pytest`.
 
 ## 10. Pruebas (`tests/test_aplicacion.py`, 12 pruebas)
 
@@ -170,8 +177,12 @@ Error esperado (columna ausente), código de salida 2 y sin archivo:
 ```
 Error: Faltan columnas obligatorias en el CSV de entrada: ['Light_conditions']. Columnas requeridas: [...]
 ```
-Docker (completar al ejecutarlo en su equipo): `[COMPLETAR: pegar salida de docker build y de ambos docker run, y confirmar que models/v-docker y outputs/predicciones_docker.csv existen en el anfitrión]`.
-
+Docker (CMD de Windows, Docker 29.6.2):
+- `docker build -t modelos-fase2:1.0 ...` terminó sin errores (imagen `modelos-fase2:1.0`, base `python:3.12.7-slim`); no se entrena durante el build.
+- `docker run --rm modelos-fase2:1.0 python -m pytest` → `12 passed` (Python 3.12.7).
+- Entrenamiento en el contenedor (`--version v-docker`): F1-macro 0.3993 y modelo base 0.3087, igual que `v1`.
+- Predicción en el contenedor: `Predicciones generadas: 10 -> outputs/predicciones_docker.csv`, mismas predicciones que la ejecución local.
+- Persistencia: con el contenedor ya eliminado (`--rm`), `models/v-docker/` (`modelo.joblib`, `metrics.json`, `metadata.json`) y `outputs/predicciones_docker.csv` existen en el equipo anfitrión; `metadata.json` guarda el hash del commit pasado con `--build-arg`.
 ## 12. Estructura
 
 ```
