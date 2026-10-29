@@ -1,6 +1,9 @@
 # Fase 2 — Scripts, versionamiento y Docker: severidad de accidentes de tránsito
 
-**Modelos y Simulación de Sistemas I · Proyecto Integrador 2026-II · Docente: Andrés Parra**
+**Modelos y Simulación de Sistemas I 
+· Proyecto Integrador 2026-II 
+· Docente: Andrés Parra**
+
 **Integrantes:** Carol Juliana Henao Causil y Carolina Arboleda Guzmán
 
 **Entrega 2 — commit/etiqueta de Git:** `entrega-2` → commit `[FALTA COMPLETAR]`
