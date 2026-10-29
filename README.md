@@ -6,7 +6,7 @@
 
 **Integrantes:** Carol Juliana Henao Causil y Carolina Arboleda Guzmán
 
-**Entrega 2 — commit/etiqueta de Git:** `entrega-2` → commit `[FALTA COMPLETAR]`
+**Entrega 2 — commit/etiqueta de Git:** `entrega-2` → commit `d6fb4c3a4ee7f2e4ebf8cbc950c7e6293531abc0`
 
 ## 1. Problema y relación con la Fase 1
 
