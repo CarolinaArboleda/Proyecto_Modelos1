@@ -1,0 +1,28 @@
+# Entornos virtuales
+.venv/
+venv/
+env/
+
+# Cachés y temporales
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+.DS_Store
+.idea/
+.vscode/
+
+# Credenciales (nunca al repositorio)
+.env
+kaggle.json
+credentials*.json
+
+# Salidas generadas
+outputs/*
+!outputs/.gitkeep
+
+# Modelos: se versionan v1 y v2 (entrega); cualquier otra versión de prueba se ignora
+models/*
+!models/v1/
+!models/v2/
+models/.tmp-*
