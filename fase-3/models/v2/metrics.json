@@ -1,0 +1,181 @@
+{
+  "version": "v2",
+  "metrica_principal": "f1_macro",
+  "conjunto_evaluacion": "prueba (no usado para ajustar ni para elegir hiperparámetros)",
+  "modelo": {
+    "accuracy": 0.8221680876979294,
+    "f1_macro": 0.3833123412342172,
+    "per_class": {
+      "Slight Injury": {
+        "precision": 0.8714568226763348,
+        "recall": 0.9336158192090396,
+        "f1": 0.9014660756904194,
+        "support": 1416
+      },
+      "Serious Injury": {
+        "precision": 0.2288135593220339,
+        "recall": 0.1291866028708134,
+        "f1": 0.1651376146788991,
+        "support": 209
+      },
+      "Fatal injury": {
+        "precision": 0.14285714285714285,
+        "recall": 0.058823529411764705,
+        "f1": 0.08333333333333333,
+        "support": 17
+      }
+    },
+    "confusion_matrix": {
+      "labels": [
+        "Slight Injury",
+        "Serious Injury",
+        "Fatal injury"
+      ],
+      "rows": "real",
+      "columns": "predicho",
+      "matrix": [
+        [
+          1322,
+          89,
+          5
+        ],
+        [
+          181,
+          27,
+          1
+        ],
+        [
+          14,
+          2,
+          1
+        ]
+      ]
+    }
+  },
+  "modelo_base": {
+    "descripcion": "DummyClassifier(most_frequent)",
+    "accuracy": 0.8623629719853837,
+    "f1_macro": 0.3086984957488555,
+    "per_class": {
+      "Slight Injury": {
+        "precision": 0.8623629719853837,
+        "recall": 1.0,
+        "f1": 0.9260954872465664,
+        "support": 1416
+      },
+      "Serious Injury": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 209
+      },
+      "Fatal injury": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 17
+      }
+    },
+    "confusion_matrix": {
+      "labels": [
+        "Slight Injury",
+        "Serious Injury",
+        "Fatal injury"
+      ],
+      "rows": "real",
+      "columns": "predicho",
+      "matrix": [
+        [
+          1416,
+          0,
+          0
+        ],
+        [
+          209,
+          0,
+          0
+        ],
+        [
+          17,
+          0,
+          0
+        ]
+      ]
+    }
+  },
+  "mejora_f1_macro_vs_base": 0.07461384548536171,
+  "validacion_cruzada_entrenamiento": {
+    "folds": 5,
+    "f1_macro_mean": 0.45430170896738054,
+    "f1_macro_std": 0.048266644184812545,
+    "f1_macro_folds": [
+      0.5303482261972828,
+      0.4350045530023033,
+      0.3909517493006331,
+      0.4846009929063637,
+      0.4306030234303197
+    ]
+  },
+  "seleccion_max_depth": [
+    {
+      "max_depth": 3,
+      "cv_f1_macro_mean": 0.3242524572707837,
+      "cv_f1_macro_std": 0.009444473688162558,
+      "cv_f1_macro_folds": [
+        0.3107826477429261,
+        0.32983098442829095,
+        0.3196410902541981,
+        0.3386894968279696,
+        0.3223180671005336
+      ]
+    },
+    {
+      "max_depth": 5,
+      "cv_f1_macro_mean": 0.36403698337028023,
+      "cv_f1_macro_std": 0.017046025110324752,
+      "cv_f1_macro_folds": [
+        0.35947688187090615,
+        0.3773903994032095,
+        0.3584992360249597,
+        0.3870846998760278,
+        0.337733699676298
+      ]
+    },
+    {
+      "max_depth": 7,
+      "cv_f1_macro_mean": 0.4091829424845774,
+      "cv_f1_macro_std": 0.022338121172519834,
+      "cv_f1_macro_folds": [
+        0.4357649813388802,
+        0.4243146257173303,
+        0.38180251628478995,
+        0.4208175742328268,
+        0.38321501484905984
+      ]
+    },
+    {
+      "max_depth": 10,
+      "cv_f1_macro_mean": 0.45430170896738054,
+      "cv_f1_macro_std": 0.048266644184812545,
+      "cv_f1_macro_folds": [
+        0.5303482261972828,
+        0.4350045530023033,
+        0.3909517493006331,
+        0.4846009929063637,
+        0.4306030234303197
+      ]
+    },
+    {
+      "max_depth": 15,
+      "cv_f1_macro_mean": 0.3429896214231884,
+      "cv_f1_macro_std": 0.016323949423445408,
+      "cv_f1_macro_folds": [
+        0.3735827222858923,
+        0.34105406889591405,
+        0.3245673773726579,
+        0.33719645571497425,
+        0.33854748284650354
+      ]
+    }
+  ]
+}
