@@ -26,10 +26,11 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field
 
-from src.config import MODEL_FILE
+from src.config import DEFAULT_TARGET, MODEL_FILE
 from src.errors import AppError
 from src.prediction import predict_dataframe
 from src.storage import load_bundle
+from src.training import train_model
 
 app = FastAPI(
     title="API - Severidad de accidentes de tránsito",
@@ -192,6 +193,46 @@ def predict(registro: RegistroAccidente):
         out, avisos = predict_dataframe(bundle, df)
     except AppError as exc:
         raise HTTPException(status_code=422, detail={"error": "Entrada inválida",
-                                                     "detalle": [str(exc)]})
+                                                        "detalle": [str(exc)]})
     return {"prediccion": str(out["prediccion"].iloc[0]), "version": bundle["version"],
             "avisos": avisos}
+    
+    
+
+# --------------------------------------------------------------------------------------
+# /train: reutiliza train_model de la Fase 2 con la configuración de v1
+# --------------------------------------------------------------------------------------
+TRAIN_PARAMS = {"max_depth": 7, "n_estimators": 400, "cv_folds": 5, "test_size": 0.2}
+_train_lock = threading.Lock()   # dos entrenamientos a la vez no deben pedir el mismo id
+
+
+def next_version_id(models_dir):
+    """Siguiente identificador libre del tipo vN (v1, v2 existen -> v3)."""
+    d = Path(models_dir)
+    usados = [int(m.group(1)) for p in (d.iterdir() if d.is_dir() else [])
+                if (m := re.fullmatch(r"v(\d+)", p.name))]
+    return f"v{max(usados, default=0) + 1}"
+
+
+@app.post("/train", status_code=201)
+def train():
+    cfg = config()
+    with _train_lock:
+        version = next_version_id(cfg["models_dir"])
+        try:
+            result = train_model(data_path=cfg["data_path"], target=DEFAULT_TARGET,
+                                    output_dir=cfg["models_dir"], version=version,
+                                    seed=cfg["seed"], log=lambda msg: print(msg, flush=True),
+                                 **TRAIN_PARAMS)
+        except AppError as exc:
+            raise HTTPException(status_code=500, detail={"error": "No se pudo entrenar.",
+                                                        "causa": str(exc)})
+    m = result["metrics"]
+    return {
+        "version": version,
+        "carpeta": str(Path(cfg["models_dir"]) / version),
+        "f1_macro_prueba": round(m["modelo"]["f1_macro"], 4),
+        "f1_macro_modelo_base": round(m["modelo_base"]["f1_macro"], 4),
+        "version_activa_para_predict": cfg["model_version"],
+        "nota": "La nueva versión no se activa sola: use MODEL_VERSION para predecir con ella.",
+    }
