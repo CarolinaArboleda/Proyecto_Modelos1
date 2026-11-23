@@ -1,4 +1,5 @@
-# Imagen de la API (Fase 3). No entrena durante el build: datos y modelos se montan al ejecutar.
+# Imagen de la API con registro de solicitudes (Fase 4). No entrena durante el build:
+# datos, modelos y registro se montan como volúmenes al ejecutar.
 FROM python:3.12.7-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -6,7 +7,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     MODELS_DIR=models \
     MODEL_VERSION=v1 \
     DATA_PATH=data/train.csv \
-    TRAIN_SEED=42
+    TRAIN_SEED=42 \
+    LOG_PATH=logs/predicciones.csv
 
 WORKDIR /app
 
@@ -14,9 +16,9 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Código: lógica de la Fase 2 (src/), API, cliente, registro de ejemplo y pruebas
+# Código: lógica de la Fase 2 (src/), API, registro, monitoreo, cliente y pruebas
 COPY src ./src
-COPY api.py cliente.py ejemplo_registro.json pytest.ini ./
+COPY api.py registro.py monitoreo.py cliente.py ejemplo_registro.json pytest.ini ./
 COPY tests ./tests
 
 # Hash del commit para metadata.json de las versiones creadas con /train
