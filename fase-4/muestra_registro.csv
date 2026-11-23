@@ -1,0 +1,4 @@
+fecha_hora,estado_http,version,prediccion
+2026-11-23T02:12:48+00:00,200,v1,Fatal injury
+2026-11-23T02:13:14+00:00,200,v1,Serious Injury
+2026-11-23T02:13:27+00:00,422,,
