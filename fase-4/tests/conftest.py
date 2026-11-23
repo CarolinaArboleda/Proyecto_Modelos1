@@ -90,3 +90,10 @@ def modelos_prueba(tmp_path, monkeypatch):
     monkeypatch.setenv("MODELS_DIR", str(carpeta))
     monkeypatch.setenv("MODEL_VERSION", "v1")
     return carpeta
+
+@pytest.fixture(autouse=True)
+def registro_temporal(tmp_path, monkeypatch):
+    """Cada prueba escribe su propio registro en una carpeta temporal (nunca en logs/)."""
+    ruta = tmp_path / "logs" / "predicciones.csv"
+    monkeypatch.setenv("LOG_PATH", str(ruta))
+    return ruta
