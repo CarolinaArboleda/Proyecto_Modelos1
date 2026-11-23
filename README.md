@@ -8,7 +8,7 @@
 
 **Entrega 3 — commit/etiqueta de Git:** `entrega-3` → commit `c6dce953166c034888356a1d891b4eda48ad185a`
 
-**Entrega 4 — etiqueta de Git:** `entrega-4`
+**Entrega 4 — etiqueta de Git:** `entrega-4` → commit `325ce1d649bfef90cc682a5079ef8f5e4b9c0b77`
 
 Clasificación multiclase de la severidad de un accidente (`Slight Injury`, `Serious Injury`, `Fatal injury`) con el *Road Traffic Accident Dataset of Addis Ababa City* (Bedane, 2020, Mendeley Data, doi:10.17632/xytv86278f.1). Modelo: Random Forest con `class_weight="balanced"` en un Pipeline de scikit-learn; métrica principal F1-macro.
 
