@@ -1,9 +1,9 @@
-"""API REST de la Fase 3: consulta y entrenamiento del modelo de severidad de accidentes.
+"""API REST de la Fase 4: la API de la Fase 3 + registro de cada solicitud a /predict.
 
 Reutiliza la lógica de la Fase 2 (carpeta src/): el mismo esquema de entrada, el mismo
 preprocesamiento guardado dentro del Pipeline y las mismas funciones de entrenamiento.
 
-Iniciar (desde fase-3):
+Iniciar (desde fase-4):
     uvicorn api:app --host 0.0.0.0 --port 8000
 
 Configuración por variables de entorno:
@@ -11,6 +11,7 @@ Configuración por variables de entorno:
     MODEL_VERSION  versión que usa /predict                     (def.: v1)
     DATA_PATH      CSV etiquetado que usa /train                (def.: data/train.csv)
     TRAIN_SEED     semilla de /train                            (def.: 42)
+        LOG_PATH       registro CSV de /predict                     (def.: logs/predicciones.csv)
 """
 import os
 import re
@@ -31,6 +32,7 @@ from src.errors import AppError
 from src.prediction import predict_dataframe
 from src.storage import load_bundle
 from src.training import train_model
+from registro import registrar
 
 app = FastAPI(
     title="API - Severidad de accidentes de tránsito",
@@ -151,6 +153,10 @@ def _describe(err):
 @app.exception_handler(RequestValidationError)
 async def validation_error_handler(request: Request, exc: RequestValidationError):
     errores = [_describe(e) for e in exc.errors()]
+        # FastAPI rechaza la entrada antes de llamar a predict(): el rechazo se registra aquí
+    # (sin versión ni predicción, porque no se usó ningún modelo).
+    if request.url.path == "/predict":
+        registrar(422)
     return JSONResponse(
         status_code=422,
         content=jsonable_encoder({"error": "Entrada inválida", "detalle": errores}),
@@ -174,11 +180,13 @@ def health():
 
 @app.post("/predict")
 def predict(registro: RegistroAccidente):
+    """Cada llamada que llega aquí deja exactamente una fila en el registro."""
     cfg = config()
     version = cfg["model_version"]
     try:
         bundle = get_bundle(cfg["models_dir"], version)
     except AppError as exc:
+        registrar(503)                      # no se usó modelo: versión y predicción vacías
         raise HTTPException(status_code=503, detail={
             "error": f"El modelo configurado ('{version}') no está disponible.",
             "causa": str(exc),
@@ -192,10 +200,15 @@ def predict(registro: RegistroAccidente):
     try:
         out, avisos = predict_dataframe(bundle, df)
     except AppError as exc:
+        registrar(422, version=bundle["version"])
         raise HTTPException(status_code=422, detail={"error": "Entrada inválida",
                                                         "detalle": [str(exc)]})
-    return {"prediccion": str(out["prediccion"].iloc[0]), "version": bundle["version"],
-            "avisos": avisos}
+    except Exception:
+        registrar(500, version=bundle["version"])
+        raise
+    prediccion = str(out["prediccion"].iloc[0])
+    registrar(200, version=bundle["version"], prediccion=prediccion)
+    return {"prediccion": prediccion, "version": bundle["version"], "avisos": avisos}
     
     
 
