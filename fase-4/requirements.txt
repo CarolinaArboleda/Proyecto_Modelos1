@@ -1,0 +1,9 @@
+# Python 3.12 (ver README). Mismas versiones de la Fase 2 + dependencias de la API.
+numpy==2.4.4
+pandas==3.0.2
+scikit-learn==1.9.1
+joblib==1.5.3
+pytest==9.1.1
+fastapi==0.164.0
+uvicorn==0.53.0
+httpx==0.28.1
